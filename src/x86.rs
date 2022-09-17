@@ -90,7 +90,7 @@ unsafe fn as_i64x4(i: __m128i) -> [i64; 2] {
 #[allow(clippy::cast_ptr_alignment)]
 #[target_feature(enable = "sha,sse2,ssse3,sse4.1")]
 #[inline]
-unsafe fn digest_blocks(state: &mut [u32; 8], message: &[u8; 64]) {
+unsafe fn digest_blocks(state: &mut [u32; 8], message: &[u8]) {
     #[allow(non_snake_case)]
     let MASK: __m128i = _mm_set_epi64x(
         0x0C0D_0E0F_0809_0A0Bu64 as i64,
@@ -159,7 +159,7 @@ pub fn cpu_is_supported() -> bool {
     shani_cpuid::get()
 }
 
-pub fn sha256(message: &[u8; 64]) -> [u8; 32] {
+pub fn sha256(message: &[u8]) -> [u8; 32] {
     let mut state = crate::consts::H256_256;
 
     unsafe {
