@@ -26,6 +26,12 @@ features:
 The `x86::cpu_is_supported` function will return `true` if all these features
 are advertised as supported by your system.
 
+## Credits
+
+This code is heavily inspired by (i.e., practically a copy of) the
+[`sha2`](https://crates.io/crates/sha2) crate:
+https://github.com/RustCrypto/hashes/tree/master/sha2
+
 ## License
 
 Licensed under either of
