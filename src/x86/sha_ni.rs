@@ -3,12 +3,7 @@ use core::arch::x86::*;
 #[cfg(target_arch = "x86_64")]
 use core::arch::x86_64::*;
 
-const PADDING_BLOCK: [u8; 64] = [
-    0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00,
-];
+use crate::consts::PADDING_BLOCK;
 
 #[inline]
 unsafe fn schedule(v0: __m128i, v1: __m128i, v2: __m128i, v3: __m128i) -> __m128i {
@@ -176,34 +171,4 @@ pub fn sha256(message: &[u8]) -> [u8; 32] {
     output[24..28].copy_from_slice(&state[6].to_be_bytes());
     output[28..32].copy_from_slice(&state[7].to_be_bytes());
     output
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use digest::Digest;
-    use sha2::Sha256;
-
-    const MESSAGE_ALL_42: [u8; 64] = [42; 64];
-    const MESSAGE_ALL_256: [u8; 64] = [255; 64];
-
-    #[test]
-    fn message_all_256() {
-        let mut digest = Sha256::new();
-        digest.update(MESSAGE_ALL_256);
-        let reference: [u8; 32] = digest.finalize().into();
-
-        let tested = sha256(&MESSAGE_ALL_256);
-        assert_eq!(reference, tested);
-    }
-
-    #[test]
-    fn message_all_42() {
-        let mut digest = Sha256::new();
-        digest.update(MESSAGE_ALL_42);
-        let reference: [u8; 32] = digest.finalize().into();
-
-        let tested = sha256(&MESSAGE_ALL_42);
-        assert_eq!(reference, tested);
-    }
 }
