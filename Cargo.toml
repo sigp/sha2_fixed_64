@@ -11,3 +11,4 @@ cpufeatures = "0.2"
 [dev-dependencies]
 digest = "0.10.5"
 sha2 = "0.10.6"
+ring = "0.16.20"
